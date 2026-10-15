@@ -21,3 +21,741 @@
                     colors: {
                         health: {
                             50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Kanit', 'sans-serif'],
+                        heading: ['Kanit', 'Prompt', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+        }
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(13, 148, 136, 0.12) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(rgba(20, 184, 166, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-full { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col selection:bg-health-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700/50 pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-health-400 dark:text-health-600 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">คัดลอกข้อความเรียบร้อยแล้ว</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-all no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand/Logo -->
+                <a href="#hero" class="flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-health-600 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-health-500/20 group-hover:scale-105 transition-transform">
+                        พ
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-heading font-semibold text-slate-900 dark:text-white text-base leading-tight group-hover:text-health-600 dark:group-hover:text-health-400 transition-colors">
+                            Supaporn Yatasang
+                        </span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-light tracking-wide uppercase">
+                            Community Health Student
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    <a href="#about" class="px-3 py-2 rounded-lg hover:text-health-600 dark:hover:text-health-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">ประวัติส่วนตัว</a>
+                    <a href="#education" class="px-3 py-2 rounded-lg hover:text-health-600 dark:hover:text-health-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">การศึกษา</a>
+                    <a href="#skills" class="px-3 py-2 rounded-lg hover:text-health-600 dark:hover:text-health-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">ทักษะและความสนใจ</a>
+                    <a href="#contact" class="px-3 py-2 rounded-lg hover:text-health-600 dark:hover:text-health-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">ติดต่อ</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-2">
+                    <button id="github-guide-btn" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl text-health-700 dark:text-health-300 bg-health-50 dark:bg-health-950/60 border border-health-200 dark:border-health-800 hover:bg-health-100 dark:hover:bg-health-900 transition-colors">
+                        <i class="fa-brands fa-github text-sm"></i>
+                        <span>วิธีขึ้น GitHub Pages</span>
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" aria-label="Toggle Theme" class="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                        <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-amber-400 text-lg"></i>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" aria-label="Toggle Navigation Menu" class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1">
+            <a href="#about" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">ประวัติส่วนตัว</a>
+            <a href="#education" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">การศึกษา</a>
+            <a href="#skills" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">ทักษะและความสนใจ</a>
+            <a href="#contact" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">ติดต่อ</a>
+            <button id="mobile-github-guide-btn" class="w-full text-left mt-2 flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-health-700 dark:text-health-300 bg-health-50 dark:bg-health-950/60 border border-health-200 dark:border-health-800">
+                <span>วิธีขึ้น GitHub Pages</span>
+                <i class="fa-brands fa-github text-sm"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="relative py-12 md:py-20 overflow-hidden bg-grid-pattern">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+                    
+                    <!-- Profile Avatar Container -->
+                    <div class="relative group">
+                        <div class="w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1.5 bg-gradient-to-tr from-health-500 via-teal-300 to-emerald-500 shadow-xl shadow-health-500/10 relative">
+                            <div class="w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 relative flex items-center justify-center">
+                                <img id="profile-img" src="https://raw.githubusercontent.com/69202302103-dotcom/suphapon_port_th/main/IMG_1648_page-0001.jpg" alt="สุภาพร ยาตาแสง (พราว)" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/0d9488/ffffff?text=%E0%B8%9E%E0%B8%A3%E0%B8%B2%E0%B8%A7'">
+                                
+                                <!-- Hover Upload Overlay -->
+                                <label for="image-upload" class="absolute inset-0 bg-slate-900/60 text-white opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center cursor-pointer text-xs font-medium no-print">
+                                    <i class="fa-solid fa-camera text-2xl mb-1"></i>
+                                    <span>อัปโหลดรูปภาพ</span>
+                                </label>
+                                <input type="file" id="image-upload" accept="image/*" class="hidden">
+                            </div>
+                        </div>
+                        
+                        <!-- Status Badge -->
+                        <div class="absolute bottom-2 right-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full shadow-lg flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>นักศึกษา ม.สาธารณสุข</span>
+                        </div>
+                    </div>
+
+                    <!-- Intro Details -->
+                    <div class="text-center md:text-left flex-1 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-health-100 dark:bg-health-950 text-health-800 dark:text-health-300 border border-health-200/80 dark:border-health-800/80">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>วิทยาลัยการสาธารณสุขสิรินธร จังหวัดขอนแก่น</span>
+                        </div>
+
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
+                            นางสาวสุภาพร ยาตาแสง <span class="text-health-600 dark:text-health-400 font-normal text-2xl sm:text-3xl">(พราว)</span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-light max-w-2xl leading-relaxed">
+                            นักศึกษาคณะสาธารณสุขศาสตร์บัณฑิต สาขาวิชาสาธารณสุขชุมชน มุ่งมั่นพัฒนาสุขภาพ ชุมชน และสร้างสรรค์สุขภาวะที่ยั่งยืนผ่านการส่งเสริมสุขภาพเชิงรุกและการดูแลประชาชน
+                        </p>
+
+                        <!-- Call to Action Buttons -->
+                        <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3 no-print">
+                            <a href="#contact" class="px-5 py-2.5 rounded-xl bg-health-600 hover:bg-health-700 text-white font-medium text-sm shadow-lg shadow-health-600/25 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>ติดต่อผู้ใช้งาน</span>
+                            </a>
+                            <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-medium text-sm transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-print"></i>
+                                <span>พิมพ์ / ดาวน์โหลด PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Personal Information Section -->
+        <section id="about" class="py-12 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800/80">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8 text-center md:text-left">
+                    <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white flex items-center justify-center md:justify-start gap-2">
+                        <i class="fa-solid fa-id-card text-health-600 dark:text-health-400"></i>
+                        <span>ข้อมูลประวัติส่วนตัว</span>
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">รายละเอียดและข้อมูลเบื้องต้นเกี่ยวกับตัวผู้สมัคร</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Card 1: Birthday -->
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0 text-lg">
+                            <i class="fa-regular fa-calendar-days"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block font-light">วัน เกิด</span>
+                            <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">4 กรกฎาคม พ.ศ. 2550</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Nationality & Race -->
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0 text-lg">
+                            <i class="fa-solid fa-flag"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block font-light">สัญชาติ / เชื้อชาติ</span>
+                            <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">ไทย / ไทย</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Religion -->
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 text-lg">
+                            <i class="fa-solid fa-dharmachakra"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block font-light">ศาสนา</span>
+                            <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">พุทธ</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Study Track -->
+                    <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/60 flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 text-lg">
+                            <i class="fa-solid fa-flask font-bold"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 block font-light">แผนการเรียนมัธยม</span>
+                            <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">วิทย์-คณิต (Sc)</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Education History Section -->
+        <section id="education" class="py-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-xl mx-auto mb-12">
+                    <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-health-600 dark:text-health-400"></i>
+                        <span>ประวัติการศึกษา</span>
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">เส้นทางการศึกษาและความมุ่งมั่นสู่การเป็นบุคลากรสาธารณสุข</p>
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="relative max-w-3xl mx-auto pl-6 sm:pl-8 border-l-2 border-slate-200 dark:border-slate-800 space-y-10">
+
+                    <!-- Level 3: Higher Education -->
+                    <div class="relative group">
+                        <!-- Timeline Point Marker -->
+                        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-health-600 text-white border-4 border-slate-50 dark:border-slate-950 flex items-center justify-center text-xs shadow-md group-hover:scale-125 transition-transform">
+                            <i class="fa-solid fa-star text-[10px]"></i>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-health-100 dark:bg-health-950 text-health-700 dark:text-health-300">
+                                    ระดับอุดมศึกษา (ปัจจุบัน)
+                                </span>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 font-light">จังหวัดขอนแก่น</span>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+                                วิทยาลัยการสาธารณสุขสิรินธร จังหวัดขอนแก่น
+                            </h3>
+                            
+                            <p class="text-sm font-medium text-health-600 dark:text-health-400 mt-1">
+                                คณะสาธารณสุขศาสตร์บัณฑิต สาขาวิชาสาธารณสุขชุมชน
+                            </p>
+
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mt-2 font-light leading-relaxed">
+                                ศึกษาเกี่ยวกับระบาดวิทยา การส่งเสริมสุขภาพในชุมชน อนามัยสิ่งแวดล้อม การบริหารสาธารณสุข และการดูแลป้องกันโรคติดต่อและโรคไม่ติดต่อในระดับปฐมภูมิ
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Level 2: High School -->
+                    <div class="relative group">
+                        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-4 border-slate-50 dark:border-slate-950 flex items-center justify-center text-xs transition-transform group-hover:bg-health-500 group-hover:text-white">
+                            <i class="fa-solid fa-school text-[10px]"></i>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                                    มัธยมศึกษาปีที่ 1 - 6
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+                                โรงเรียนอุบลรัตน์พิทยาคม
+                            </h3>
+
+                            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                                แผนการเรียน: <span class="font-medium text-slate-800 dark:text-slate-100">ห้องเรียนพิเศษวิทยาศาสตร์-คณิตศาสตร์ (Sc)</span>
+                            </p>
+
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                เน้นทักษะการทดลองทางวิทยาศาสตร์ กระบวนการคิดวิเคราะห์อย่างเป็นระบบ และคณิตศาสตร์ประยุกต์
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Level 1: Primary School -->
+                    <div class="relative group">
+                        <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-4 border-slate-50 dark:border-slate-950 flex items-center justify-center text-xs transition-transform group-hover:bg-health-500 group-hover:text-white">
+                            <i class="fa-solid fa-book-open text-[10px]"></i>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                                    ประถมศึกษาปีที่ 1 - 6
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+                                โรงเรียนอนุบาลอุบลรัตน์
+                            </h3>
+
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                ปลูกฝังพื้นฐานการเรียนรู้ วินัยทางศึกษา และกิจกรรมการทำประโยชน์ส่วนรวม
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Competencies & Public Health Focus -->
+        <section id="skills" class="py-16 bg-slate-100/60 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-xl mx-auto mb-12">
+                    <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-heart-pulse text-health-600 dark:text-health-400"></i>
+                        <span>ความเชี่ยวชาญและความสนใจ</span>
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">สมรรถนะสำคัญสำหรับงานสาธารณสุขและการส่งเสริมสุขภาพชุมชน</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Skill 1 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-health-400 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-health-50 dark:bg-health-950 text-health-600 dark:text-health-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">การทำงานร่วมกับชุมชน</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 font-light leading-relaxed">
+                            ทักษะการสื่อสารเพื่อสร้างความเข้าใจในชุมชน การรับฟังและร่วมวางแผนแก้ไขปัญหาสุขภาพกับผู้นำและชาวบ้านอย่างใกล้ชิด
+                        </p>
+                    </div>
+
+                    <!-- Skill 2 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-health-400 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-kit-medical"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">งานอนามัยและปฐมภูมิ</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 font-light leading-relaxed">
+                            การปฐมพยาบาลเบื้องต้น การตรวจประเมินสุขภาพชุมชน การคัดกรองโรคเบาหวาน ความดันโลหิต และการดูแลสุขภาพเชิงป้องกัน
+                        </p>
+                    </div>
+
+                    <!-- Skill 3 -->
+                    <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-health-400 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">การวิเคราะห์และวิทยาวิทยา</h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 font-light leading-relaxed">
+                            พื้นฐานการคิดวิเคราะห์เชิงวิทยาศาสตร์ การรวบรวมข้อมูลสุขภาพประชากรเพื่อประเมินความเสี่ยงและแนวโน้มทางสาธารณสุข
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Personal Qualities Tag Cloud -->
+                <div class="mt-8 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-center gap-2">
+                    <span class="text-xs text-slate-400 font-medium mr-2">คุณลักษณะเด่น:</span>
+                    <span class="px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">มีความรับผิดชอบสูง</span>
+                    <span class="px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">ทำงานเป็นทีมได้ดี</span>
+                    <span class="px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">พร้อมเรียนรู้สิ่งใหม่</span>
+                    <span class="px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">จิตสาธารณะ</span>
+                    <span class="px-3 py-1 rounded-full text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">มนุษยสัมพันธ์ดี</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Projects / Activities Placeholder -->
+        <section class="py-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-images text-health-600 dark:text-health-400"></i>
+                            <span>ผลงานและกิจกรรม</span>
+                        </h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">ภาพรวมกิจกรรมและการลงพื้นที่ภาคปฏิบัติ</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Activity Card 1 -->
+                    <div class="rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm group hover:shadow-md transition-all">
+                        <div class="h-44 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                            <img src="https://placehold.co/600x400/14b8a6/ffffff?text=%E0%B8%81%E0%B8%B4%E0%B8%88%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%AA%E0%B8%B2%E0%B8%90%E0%B8%B2%E0%B8%A3%E0%B8%93%E0%B8%AA%E0%B8%B8%E0%B8%82" alt="กิจกรรมสาธารณสุข" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-5">
+                            <span class="text-[10px] font-semibold text-health-600 dark:text-health-400 uppercase tracking-wider">กิจกรรมสถาบัน</span>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mt-1">กิจกรรมการส่งเสริมสุขภาพในชุมชน</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                การลงพื้นที่จัดกิจกรรมให้ความรู้ด้านโภชนาการ และการส่งเสริมสุขภาพปฐมภูมิสำหรับประชาชน
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Activity Card 2 -->
+                    <div class="rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm group hover:shadow-md transition-all">
+                        <div class="h-44 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                            <img src="https://placehold.co/600x400/0d9488/ffffff?text=%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B9%8C-%E0%B8%84%E0%B8%93%E0%B8%B1%E0%B8%95" alt="โครงการวิทย์-คณิต" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-5">
+                            <span class="text-[10px] font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wider">ห้องเรียนพิเศษ Sc</span>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mt-1">โครงงานวิทยาศาสตร์และวิจัย</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                การจัดทำโครงงานทดลองเชิงวิทยาศาสตร์และการนำเสนอในระดับโรงเรียนอุบลรัตน์พิทยาคม
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Activity Card 3 -->
+                    <div class="rounded-2xl overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm group hover:shadow-md transition-all">
+                        <div class="h-44 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                            <img src="https://placehold.co/600x400/0f766e/ffffff?text=%E0%B8%88%E0%B8%B4%E0%B8%95%E0%B8% decline%E0%B8%AD%E0%B8%B2%E0%B8%AA%E0%B8%B2" alt="จิตอาสา" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="p-5">
+                            <span class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">จิตอาสา</span>
+                            <h3 class="text-base font-bold text-slate-900 dark:text-white mt-1">โครงการบำเพ็ญประโยชน์เพื่อสังคม</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                การเข้าร่วมกิจกรรมพัฒนาสิ่งแวดล้อมและช่วยเหลือชุมชนร่วมกับคณะและสถาบัน
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 bg-white dark:bg-slate-900/60 border-t border-slate-200/80 dark:border-slate-800/80">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    
+                    <!-- Left: Contact Info -->
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-xs font-semibold text-health-600 dark:text-health-400 uppercase tracking-wider">Contact Details</span>
+                            <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white mt-1">
+                                ช่องทางการติดต่อ
+                            </h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 font-light">
+                                ยินดีรับฟังข้อมูล ติดต่อสอบถาม หรือร่วมงานด้านสาธารณสุขชุมชน
+                            </p>
+                        </div>
+
+                        <div class="space-y-4 pt-2">
+                            
+                            <!-- Phone -->
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
+                                <div class="flex items-center gap-3.5">
+                                    <div class="w-10 h-10 rounded-xl bg-health-100 dark:bg-health-950 text-health-600 dark:text-health-400 flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-slate-400 block font-light">เบอร์โทรศัพท์</span>
+                                        <a href="tel:0807573395" class="text-sm font-semibold text-slate-800 dark:text-slate-100 hover:text-health-600 transition-colors">
+                                            080-757-3395
+                                        </a>
+                                    </div>
+                                </div>
+                                <button onclick="copyToClipboard('0807573395', 'เบอร์โทรศัพท์')" class="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors no-print" title="คัดลอกเบอร์โทร">
+                                    <i class="fa-regular fa-copy text-lg"></i>
+                                </button>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between">
+                                <div class="flex items-center gap-3.5 overflow-hidden">
+                                    <div class="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center text-lg shrink-0">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <span class="text-xs text-slate-400 block font-light">อีเมลสถาบัน</span>
+                                        <a href="mailto:69202302103@scphkk.ac.th" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 hover:text-health-600 transition-colors truncate block">
+                                            69202302103@scphkk.ac.th
+                                        </a>
+                                    </div>
+                                </div>
+                                <button onclick="copyToClipboard('69202302103@scphkk.ac.th', 'อีเมล')" class="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors shrink-0 no-print" title="คัดลอกอีเมล">
+                                    <i class="fa-regular fa-copy text-lg"></i>
+                                </button>
+                            </div>
+
+                            <!-- Address Note -->
+                            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/60 flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block font-light">สถานที่ศึกษา / ปฏิบัติงาน</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
+                                        วิทยาลัยการสาธารณสุขสิรินธร จังหวัดขอนแก่น
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right: Quick Message Box -->
+                    <div class="bg-slate-50 dark:bg-slate-800/40 p-6 sm:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 shadow-sm no-print">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">ส่งข้อความฝากไว้</h3>
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">ชื่อผู้ติดต่อ</label>
+                                <input type="text" required placeholder="กรอกชื่อของคุณ" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-health-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">อีเมลหรือเบอร์ติดต่อ</label>
+                                <input type="text" required placeholder="example@email.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-health-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">ข้อความ</label>
+                                <textarea rows="3" required placeholder="พิมพ์ข้อความที่ต้องการฝากไว้..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-health-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-health-600 hover:bg-health-700 text-white font-medium text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>ส่งข้อความ</span>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- GitHub Pages Guide Modal -->
+    <div id="github-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xl">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">วิธีอัปโหลดขึ้น GitHub Pages</h3>
+                        <p class="text-xs text-slate-500">ขั้นตอนการสร้างลิงก์เว็บไซต์ออนไลน์ฟรี</p>
+                    </div>
+                </div>
+                <button id="close-modal-btn" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                
+                <div class="flex items-start gap-4">
+                    <span class="w-7 h-7 rounded-full bg-health-600 text-white font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-1">สมัครและสร้าง Repository บน GitHub</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">เข้าเว็บไซต์ <a href="https://github.com" target="_blank" class="text-health-600 underline">GitHub.com</a> แล้วกดล็อกอิน/สมัครสมาชิก จากนั้นกดสร้าง Repository ใหม่ (ชื่อ repository เช่น <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-health-600">portfolio</code>)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <span class="w-7 h-7 rounded-full bg-health-600 text-white font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-1">ตั้งชื่อไฟล์นี้ว่า <code class="text-health-600">index.html</code></h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">บันทึกโค้ดนี้ลงในเครื่องคอมพิวเตอร์ โดยตั้งชื่อไฟล์เป็น <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-800 dark:text-slate-200">index.html</code> เท่านั้น (เพื่อให้ GitHub Pages ตรวจพบเป็นหน้าแรกโดยอัตโนมัติ)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <span class="w-7 h-7 rounded-full bg-health-600 text-white font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-1">อัปโหลดไฟล์ขึ้น GitHub</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">ในหน้า Repository ที่สร้างไว้ กด <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">Add file</code> -> <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">Upload files</code> แล้วลากไฟล์ <code class="text-health-600 font-mono">index.html</code> ไปวาง แล้วกด **Commit changes**</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <span class="w-7 h-7 rounded-full bg-health-600 text-white font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                    <div>
+                        <h4 class="font-bold text-slate-900 dark:text-white mb-1">เปิดใช้งาน GitHub Pages</h4>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">ไปที่เมนู **Settings** -> **Pages** ในส่วนของ Build and deployment ให้เลือก Source เป็น <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">Deploy from a branch</code> และเลือก Branch เป็น <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">main</code> (หรือ master) แล้วกด **Save**</p>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-health-50 dark:bg-health-950/80 border border-health-200 dark:border-health-800 flex items-center gap-3">
+                    <i class="fa-solid fa-circle-check text-health-600 text-xl"></i>
+                    <p class="text-xs text-health-900 dark:text-health-200">
+                        รอประมาณ 1-2 นาที คุณจะได้ URL เว็บไซต์ Portfolio ออนไลน์ เช่น <code class="font-mono underline">https://username.github.io/portfolio/</code> ที่สามารถส่งให้ผู้อื่นเข้าชมได้ทันที!
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-right">
+                <button id="modal-ok-btn" class="px-5 py-2 rounded-xl bg-health-600 text-white font-medium text-xs hover:bg-health-700 transition-colors">
+                    รับทราบและเข้าใจแล้ว
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 font-light no-print">
+        <div class="max-w-6xl mx-auto px-4">
+            <p>© 2026 Supaporn Yatasang. All rights reserved.</p>
+            <p class="mt-1">คณะสาธารณสุขศาสตร์บัณฑิต สาขาวิชาสาธารณสุขชุมชน | วิทยาลัยการสาธารณสุขสิรินธร จังหวัดขอนแก่น</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Switcher Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        
+        // System preference default
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Copy to Clipboard Utility Function
+        function copyToClipboard(text, label) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast(`คัดลอก ${label} เรียบร้อยแล้ว`);
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Local Profile Image Upload Handling
+        const imageUpload = document.getElementById('image-upload');
+        const profileImg = document.getElementById('profile-img');
+
+        // Load cached image if exists
+        const savedImage = localStorage.getItem('supaporn_portfolio_avatar');
+        if (savedImage) {
+            profileImg.src = savedImage;
+        }
+
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    profileImg.src = event.target.result;
+                    try {
+                        localStorage.setItem('supaporn_portfolio_avatar', event.target.result);
+                    } catch (err) {
+                        console.log('Image too large to cache locally');
+                    }
+                    showToast('อัปโหลดรูปภาพโปรไฟล์เรียบร้อย');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Contact Form Handler
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('ส่งข้อความสำเร็จ! ขอบคุณสำหรับการติดต่อ');
+            contactForm.reset();
+        });
+
+        // GitHub Modal Logic
+        const githubModal = document.getElementById('github-modal');
+        const githubGuideBtn = document.getElementById('github-guide-btn');
+        const mobileGithubGuideBtn = document.getElementById('mobile-github-guide-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalOkBtn = document.getElementById('modal-ok-btn');
+
+        function openGitHubModal() {
+            githubModal.classList.remove('hidden');
+        }
+
+        function closeGitHubModal() {
+            githubModal.classList.add('hidden');
+        }
+
+        if (githubGuideBtn) githubGuideBtn.addEventListener('click', openGitHubModal);
+        if (mobileGithubGuideBtn) mobileGithubGuideBtn.addEventListener('click', openGitHubModal);
+        if (closeModalBtn) closeModalBtn.addEventListener('click', closeGitHubModal);
+        if (modalOkBtn) modalOkBtn.addEventListener('click', closeGitHubModal);
+
+        githubModal.addEventListener('click', (e) => {
+            if (e.target === githubModal) {
+                closeGitHubModal();
+            }
+        });
+    </script>
+</body>
+</html>
